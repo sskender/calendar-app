@@ -2,6 +2,8 @@ import React from "react";
 import moment from "moment";
 import styled from "styled-components";
 
+import {EventList} from "../Events/EventList";
+
 const GridWrap = styled.div`
     background-color: ${props => props.isHeader ? "#1e1f21" : "#404040"};
     display: grid;
@@ -77,6 +79,9 @@ const CalGrid = ({startDay, today}) => {
                                     {isCurrDay(dayItem) && <CurrDay>{dayItem.format("D")}</CurrDay>}
                                 </DayWrap>
                             </CellInRow>
+
+                            <EventList dayItem={dayItem} />
+
                         </CellWrap>
                     ))
                 }

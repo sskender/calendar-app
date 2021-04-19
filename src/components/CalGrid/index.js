@@ -80,7 +80,7 @@ const CalGrid = ({startDay, today}) => {
                                 </DayWrap>
                             </CellInRow>
 
-                            <EventList dayItem={dayItem} />
+                            <EventList dayItem={dayItem} today={today} />
 
                         </CellWrap>
                     ))

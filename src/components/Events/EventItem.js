@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
+import moment from "moment";
+
 /**
  * TODO onClick open event form for editing
  * TODO nicely parse event time variable
  **/
 
 const EventWrap = styled.div`
-  background-color: #449246;
+  background-color: ${(props) => (props.thisday ? "#507AE6" : "#449246")};
   border-radius: 0.25rem;
   color: white;
   border-style: solid;
@@ -18,6 +20,7 @@ const EventWrap = styled.div`
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
   position: relative;
+  opacity: ${(props) => (props.thismonth ? "1.0" : "0.6")};
 `;
 
 const EventTitle = styled.div`
@@ -32,9 +35,15 @@ const EventTime = styled.div`
   top: 0.025rem;
 `;
 
-const EventItem = ({ event }) => {
+const EventItem = ({ event, dayItem, today }) => {
+  const isCurrDay = (day) => moment().isSame(day, "day");
+  const isSelMonth = (day) => today.isSame(day, "month");
+
   return (
-    <EventWrap>
+    <EventWrap
+      thismonth={isSelMonth(dayItem) ? "true" : ""}
+      thisday={isCurrDay(dayItem) ? "true" : ""}
+    >
       <EventTitle>{event.title}</EventTitle>
       <EventTime>{event.time}</EventTime>
     </EventWrap>

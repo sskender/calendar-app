@@ -28,7 +28,7 @@ const generateEvent = () => {
   }
 };
 
-const EventList = ({ dayItem }) => {
+const EventList = ({ dayItem, today }) => {
   {
     /*
     return (allEvents.map(event => {

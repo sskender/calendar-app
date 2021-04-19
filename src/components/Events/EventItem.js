@@ -39,8 +39,16 @@ const EventItem = ({ event, dayItem, today }) => {
   const isCurrDay = (day) => moment().isSame(day, "day");
   const isSelMonth = (day) => today.isSame(day, "month");
 
+  const eventClicked = () => {
+    // TODO popup window to edit and delete event
+    console.log(
+      `I clicked on event ${event.title} on ${dayItem.format("D-MM-YYYY")}`
+    );
+  };
+
   return (
     <EventWrap
+      onClick={eventClicked}
       thismonth={isSelMonth(dayItem) ? "true" : ""}
       thisday={isCurrDay(dayItem) ? "true" : ""}
     >

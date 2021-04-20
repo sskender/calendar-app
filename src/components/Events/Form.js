@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { FaTrashAlt } from "react-icons/fa";
+
 const FormWrap = styled.div`
   text-align: center;
   background-color: #272829;
@@ -75,7 +77,19 @@ const TimeInput = styled(TitleInput)`
   margin-right: 0.25rem;
 `;
 
-const Form = ({ eventItem, submitEvent }) => {
+const TrashButton = styled.button`
+  color: #e6e6e6;
+  background-color: #aa2c2c;
+  border: unset;
+  border-radius: 4px;
+  margin-left: 2rem;
+  padding-top: 0.25rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  font-size: 1.25rem;
+`;
+
+const Form = ({ eventItem, submitEvent, deleteEvent, closeForm }) => {
   const [title, setTitle] = React.useState(eventItem?.title);
   const [startTime, setStartTime] = React.useState(
     eventItem?.startTime || "09:00"
@@ -96,6 +110,12 @@ const Form = ({ eventItem, submitEvent }) => {
     }
   };
 
+  const handleDelete = (event) => {
+    event.preventDefault();
+    const eventId = eventItem.id;
+    deleteEvent(eventId);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const updatedEvent = {
@@ -111,6 +131,11 @@ const Form = ({ eventItem, submitEvent }) => {
     <FormWrap>
       <FormTitle>
         {eventItem == null ? "Novi događaj" : "Uredi događaj"}
+        {eventItem != null ? (
+          <TrashButton name="delete" onClick={handleDelete}>
+            <FaTrashAlt />
+          </TrashButton>
+        ) : null}
       </FormTitle>
       <form onSubmit={handleSubmit}>
         <div>
@@ -143,8 +168,12 @@ const Form = ({ eventItem, submitEvent }) => {
         </div>
         <br />
         <div>
-          <SubmitButton type="submit">SAVE</SubmitButton>
-          <CancelButton type="submit">QUIT</CancelButton>
+          <SubmitButton type="submit" onClick={handleSubmit} name="save">
+            SAVE
+          </SubmitButton>
+          <CancelButton onClick={closeForm} name="quit">
+            QUIT
+          </CancelButton>
         </div>
       </form>
     </FormWrap>

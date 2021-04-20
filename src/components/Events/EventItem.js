@@ -3,10 +3,7 @@ import styled from "styled-components";
 
 import moment from "moment";
 
-/**
- * TODO onClick open event form for editing
- * TODO nicely parse event time variable
- **/
+import { Form } from "./Form";
 
 const EventWrap = styled.div`
   background-color: ${(props) => (props.thisday ? "#507AE6" : "#449246")};
@@ -36,25 +33,47 @@ const EventTime = styled.div`
 `;
 
 const EventItem = ({ event, dayItem, today }) => {
+  const [isEditingOpen, setIsEditingOpen] = React.useState(false);
+
+  const toggleEditingPopup = () => {
+    setIsEditingOpen(!isEditingOpen);
+  };
+
   const isCurrDay = (day) => moment().isSame(day, "day");
   const isSelMonth = (day) => today.isSame(day, "month");
 
-  const eventClicked = () => {
-    // TODO popup window to edit and delete event
-    console.log(
-      `I clicked on event ${event.title} on ${dayItem.format("D-MM-YYYY")}`
-    );
+  const updateEvent = (event) => {
+    toggleEditingPopup();
+    console.log(`Event modified: ${event}`);
+    console.log(event);
+    // TODO connect with service
+  };
+
+  const deleteEvent = (eventId) => {
+    toggleEditingPopup();
+    console.log(`deleting event with id: ${eventId}`);
+    // TODO connect with service
   };
 
   return (
-    <EventWrap
-      onClick={eventClicked}
-      thismonth={isSelMonth(dayItem) ? "true" : ""}
-      thisday={isCurrDay(dayItem) ? "true" : ""}
-    >
-      <EventTitle>{event.title}</EventTitle>
-      <EventTime>{event.time}</EventTime>
-    </EventWrap>
+    <>
+      <EventWrap
+        onClick={toggleEditingPopup}
+        thismonth={isSelMonth(dayItem) || ""}
+        thisday={isCurrDay(dayItem) || ""}
+      >
+        <EventTitle>{event.title}</EventTitle>
+        <EventTime>{event.startTime}</EventTime>
+      </EventWrap>
+      {isEditingOpen ? (
+        <Form
+          eventItem={event}
+          submitEvent={updateEvent}
+          deleteEvent={deleteEvent}
+          closeForm={toggleEditingPopup}
+        />
+      ) : null}
+    </>
   );
 };
 

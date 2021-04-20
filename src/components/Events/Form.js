@@ -77,8 +77,10 @@ const TimeInput = styled(TitleInput)`
 
 const Form = ({ eventItem, submitEvent }) => {
   const [title, setTitle] = React.useState(eventItem?.title);
-  const [startTime, setStartTime] = React.useState(eventItem?.start);
-  const [endTime, setEndTime] = React.useState(eventItem?.end);
+  const [startTime, setStartTime] = React.useState(
+    eventItem?.startTime || "09:00"
+  );
+  const [endTime, setEndTime] = React.useState(eventItem?.endTime || "10:30");
 
   const handleChange = (event) => {
     const name = event.target.name;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import moment from "moment";
 
-import { Form } from "./Form";
+import { Form } from "../Form";
 
 const EventWrap = styled.div`
   background-color: ${(props) => (props.thisday ? "#507AE6" : "#449246")};

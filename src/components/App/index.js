@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {CalGrid} from "../CalGrid";
 import {CalNav} from "../CalNav";
 import {TitleBar} from "../TitleBar";
+import {Form} from "../Form";
 
 const ShadoWrap = styled('div')`
   border-bottom: 2px solid #464648;
@@ -20,6 +21,8 @@ const ShadoWrap = styled('div')`
 function App() {
   moment.locale('hr');
   
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const [today, setToday] = useState(moment());
   const startDay = today.clone().startOf("month").startOf("week");
   
@@ -27,9 +30,13 @@ function App() {
   const currMontHandler = () => setToday(moment());
   const nextMontHandler = () => setToday(prev => prev.clone().add(1, 'month'));
   
+  const toggleFormShow = () => {
+    setIsFormOpen(!isFormOpen);
+  };
+
   return (
     <ShadoWrap>
-      <TitleBar />
+      <TitleBar newEventHandler={toggleFormShow} />
       <CalNav
         today={today}
         prevMontHandler={prevMontHandler}
@@ -37,6 +44,12 @@ function App() {
         nextMontHandler={nextMontHandler}
       />
       <CalGrid startDay={startDay} today={today} />
+      {isFormOpen ? (
+        <Form
+          saveButtonHandler={null}
+          quitButtonHandler={toggleFormShow}
+        />
+      ) : null}
     </ShadoWrap>
   );
 };

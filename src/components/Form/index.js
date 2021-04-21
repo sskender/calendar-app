@@ -55,6 +55,7 @@ const CancelButton = styled(SubmitButton)`
 `;
 
 const InputLabel = styled.label`
+  color: #e6e6e6;
   font-size: 1rem;
 `;
 
@@ -89,8 +90,13 @@ const TrashButton = styled.button`
   font-size: 1.25rem;
 `;
 
-const Form = ({ eventItem, submitEvent, deleteEvent, closeForm }) => {
-  const [title, setTitle] = React.useState(eventItem?.title);
+const Form = ({
+  eventItem,
+  saveButtonHandler,
+  deleteButtonHandler,
+  quitButtonHandler,
+}) => {
+  const [title, setTitle] = React.useState(eventItem?.title || "");
   const [startTime, setStartTime] = React.useState(
     eventItem?.startTime || "09:00"
   );
@@ -113,18 +119,25 @@ const Form = ({ eventItem, submitEvent, deleteEvent, closeForm }) => {
   const handleDelete = (event) => {
     event.preventDefault();
     const eventId = eventItem.id;
-    deleteEvent(eventId);
+    deleteButtonHandler(eventId);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const updatedEvent = {
-      id: eventItem.id,
+      id: eventItem?.id || null,
       title,
       startTime,
       endTime,
     };
-    submitEvent(updatedEvent);
+    quitButtonHandler();
+    // TODO validate data before sending
+    saveButtonHandler(updatedEvent);
+  };
+
+  const handleQuit = (event) => {
+    event.preventDefault();
+    quitButtonHandler();
   };
 
   return (
@@ -171,7 +184,7 @@ const Form = ({ eventItem, submitEvent, deleteEvent, closeForm }) => {
           <SubmitButton type="submit" onClick={handleSubmit} name="save">
             Spremi
           </SubmitButton>
-          <CancelButton onClick={closeForm} name="quit">
+          <CancelButton onClick={handleQuit} name="quit">
             Odustani
           </CancelButton>
         </div>

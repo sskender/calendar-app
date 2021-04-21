@@ -169,10 +169,10 @@ const Form = ({ eventItem, submitEvent, deleteEvent, closeForm }) => {
         <br />
         <div>
           <SubmitButton type="submit" onClick={handleSubmit} name="save">
-            SAVE
+            Spremi
           </SubmitButton>
           <CancelButton onClick={closeForm} name="quit">
-            QUIT
+            Odustani
           </CancelButton>
         </div>
       </form>

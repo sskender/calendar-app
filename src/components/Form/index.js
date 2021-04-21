@@ -120,6 +120,7 @@ const Form = ({
     event.preventDefault();
     const eventId = eventItem.id;
     deleteButtonHandler(eventId);
+    quitButtonHandler();
   };
 
   const handleSubmit = (event) => {
@@ -130,9 +131,9 @@ const Form = ({
       startTime,
       endTime,
     };
-    quitButtonHandler();
     // TODO validate data before sending
     saveButtonHandler(updatedEvent);
+    quitButtonHandler();
   };
 
   const handleQuit = (event) => {

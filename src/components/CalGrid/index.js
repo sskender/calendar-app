@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import styled from "styled-components";
 
-import {EventList} from "../Events/EventList";
+import {Events} from "../Events";
 
 const GridWrap = styled.div`
     background-color: ${props => props.isHeader ? "#1e1f21" : "#404040"};
@@ -45,7 +45,7 @@ const CurrDay = styled('div')`
     width: 82.5%;
 `;
 
-const CalGrid = ({startDay, today}) => {
+const CalGrid = ({startDay, today, editEventHandler}) => {
     const totalDays = 42;
     const day = startDay.clone().subtract(1, "day");
     const daysMap = [...Array(totalDays)].map(() => day.add(1, "day").clone());
@@ -80,7 +80,7 @@ const CalGrid = ({startDay, today}) => {
                                 </DayWrap>
                             </CellInRow>
 
-                            <EventList dayItem={dayItem} today={today} />
+                            <Events dayItem={dayItem} today={today} editEventHandler={editEventHandler} />
 
                         </CellWrap>
                     ))

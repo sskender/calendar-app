@@ -23,6 +23,8 @@ function App() {
   
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  const [eventItem, setEventItem] = useState(null);
+
   const [today, setToday] = useState(moment());
   const startDay = today.clone().startOf("month").startOf("week");
   
@@ -30,24 +32,35 @@ function App() {
   const currMontHandler = () => setToday(moment());
   const nextMontHandler = () => setToday(prev => prev.clone().add(1, 'month'));
   
-  const toggleFormShow = () => {
-    setIsFormOpen(!isFormOpen);
+  // Fill event item data and show form
+  const handleFormOpen = (eventItem) => {
+    if (isFormOpen) { return; }
+    setEventItem(eventItem);
+    setIsFormOpen(true);
+  };
+
+  // Clear event item data and hide form
+  const handleFormClose = () => {
+    setEventItem(null);
+    setIsFormOpen(false);
   };
 
   return (
     <ShadoWrap>
-      <TitleBar newEventHandler={toggleFormShow} />
+      <TitleBar newEventHandler={() => { handleFormOpen(null); }} />
       <CalNav
         today={today}
         prevMontHandler={prevMontHandler}
         currMontHandler={currMontHandler}
         nextMontHandler={nextMontHandler}
       />
-      <CalGrid startDay={startDay} today={today} />
+      <CalGrid startDay={startDay} today={today} editEventHandler={handleFormOpen} />
       {isFormOpen ? (
         <Form
+          eventItem={eventItem}
           saveButtonHandler={null}
-          quitButtonHandler={toggleFormShow}
+          deleteButtonHandler={null}
+          quitButtonHandler={handleFormClose}
         />
       ) : null}
     </ShadoWrap>

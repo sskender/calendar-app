@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import moment from "moment";
+
+import * as service from "../../services/event.service";
 
 const EventWrap = styled.div`
   background-color: ${(props) => (props.thisday ? "#507AE6" : "#449246")};
@@ -30,29 +32,26 @@ const EventTime = styled.div`
   top: 0.025rem;
 `;
 
-// TODO remove dummy
-const allEvents = [
-  {
-    id: 1,
-    title: "Event 1",
-    time: "12.15 AM",
-    startTime: "12:15",
-    endTime: "16:00",
-  },
-  {
-    id: 2,
-    title: "Event 2",
-    time: "13.45 AM",
-    startTime: "13:45",
-    endTime: "14:30",
-  },
-];
-
 const Events = ({ dayItem, today, editEventHandler }) => {
+  const [eventsList, setEventsList] = useState([]);
+
   const isCurrDay = (day) => moment().isSame(day, "day");
   const isSelMonth = (day) => today.isSame(day, "month");
 
-  return allEvents.map((eventItem) => {
+  useEffect(() => {
+    const fetchEvents = async (dayItem) => {
+      const dayItemFormat = dayItem.format("YYYY-MM-DD");
+      try {
+        const events = await service.getEvents(dayItemFormat);
+        setEventsList(events);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchEvents(dayItem);
+  }, [dayItem]);
+
+  return eventsList.map((eventItem) => {
     return (
       <EventWrap
         onClick={() => {

@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import moment from "moment";
+
 import { FaTrashAlt } from "react-icons/fa";
 
 const FormWrap = styled.div`
@@ -71,6 +73,11 @@ const TitleInput = styled.input`
   margin-top: 5px;
 `;
 
+const DateInput = styled(TitleInput)`
+  width: auto;
+  font-size: 1.2rem;
+`;
+
 const TimeInput = styled(TitleInput)`
   width: auto;
   font-size: 1.2rem;
@@ -97,6 +104,9 @@ const Form = ({
   quitButtonHandler,
 }) => {
   const [title, setTitle] = React.useState(eventItem?.title || "");
+  const [date, setDate] = React.useState(
+    eventItem?.date || moment().format("YYYY-MM-DD")
+  );
   const [startTime, setStartTime] = React.useState(
     eventItem?.startTime || "09:00"
   );
@@ -107,6 +117,9 @@ const Form = ({
     if (name === "title") {
       const title = event.target.value;
       setTitle(title);
+    } else if (name === "date") {
+      const date = event.target.value;
+      setDate(date);
     } else if (name === "start-time") {
       const startTime = event.target.value;
       setStartTime(startTime);
@@ -118,8 +131,7 @@ const Form = ({
 
   const handleDelete = (event) => {
     event.preventDefault();
-    const eventId = eventItem.id;
-    deleteButtonHandler(eventId);
+    deleteButtonHandler(eventItem);
     quitButtonHandler();
   };
 
@@ -128,10 +140,10 @@ const Form = ({
     const updatedEvent = {
       id: eventItem?.id || null,
       title,
+      date,
       startTime,
       endTime,
     };
-    // TODO validate data before sending
     saveButtonHandler(updatedEvent);
     quitButtonHandler();
   };
@@ -162,6 +174,17 @@ const Form = ({
             value={title}
             onChange={handleChange}
           ></TitleInput>
+        </div>
+        <br />
+        <div>
+          <InputLabel>Datum:</InputLabel>
+          <br />
+          <DateInput
+            type="date"
+            name="date"
+            value={date}
+            onChange={handleChange}
+          ></DateInput>
         </div>
         <br />
         <div>

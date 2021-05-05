@@ -9,6 +9,7 @@ const EventWrap = styled.div`
   background-color: ${(props) => (props.thisday ? "#507AE6" : "#449246")};
   border-radius: 0.25rem;
   color: white;
+  cursor: pointer;
   border-style: solid;
   border: 0.1rem;
   border-color: #272829;

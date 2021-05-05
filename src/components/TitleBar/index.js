@@ -24,6 +24,7 @@ const ButtonWrap = styled('button')`
 
 const NewBtn = styled(ButtonWrap)`
   background-color: #449246;
+  cursor: pointer;
   font-weight: bold;
   margin-bottom: 9px;
   margin-left: 9px;

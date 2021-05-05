@@ -43,12 +43,8 @@ const Events = ({ dayItem, today, editEventHandler }) => {
   useEffect(() => {
     const fetchEvents = async (dayItem) => {
       const dayItemFormat = dayItem.format("YYYY-MM-DD");
-      try {
-        const events = await service.getEvents(dayItemFormat);
-        setEventsList(events);
-      } catch (error) {
-        console.error(error);
-      }
+      const events = await service.getEvents(dayItemFormat);
+      setEventsList(events);
     };
     fetchEvents(dayItem);
   }, [dayItem]);

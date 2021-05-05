@@ -9,35 +9,39 @@ const getEvents = async (dayItem) => {
     .where("date", "==", dayItem)
     .orderBy("start_time");
 
-  const querySnaphost = await dbQuery.get();
+  try {
+    const querySnaphost = await dbQuery.get();
 
-  const eventsList = [];
-  querySnaphost.forEach((doc) => {
-    const id = doc.id;
-    const data = doc.data();
+    const eventsList = [];
+    querySnaphost.forEach((doc) => {
+      const id = doc.id;
+      const data = doc.data();
 
-    const eventItem = {
-      id,
-      title: data.title,
-      date: data.date,
-      startTime: data.start_time,
-      endTime: data.end_time,
-    };
+      const eventItem = {
+        id,
+        title: data.title,
+        date: data.date,
+        startTime: data.start_time,
+        endTime: data.end_time,
+      };
 
-    eventsList.push(eventItem);
-  });
+      eventsList.push(eventItem);
+    });
 
-  return eventsList;
+    return eventsList;
+  } catch (err) {
+    return [];
+  }
 };
-
-// TODO wrap try catch block
 
 // Delete event
 const deleteEvent = async (eventItem) => {
   const eventId = eventItem.id;
 
-  const eventRef = database.collection(COLLECTION_NAME).doc(eventId);
-  await eventRef.delete();
+  try {
+    const eventRef = database.collection(COLLECTION_NAME).doc(eventId);
+    await eventRef.delete();
+  } catch (err) {}
 };
 
 const insertNewEvent = async (eventItem) => {
@@ -48,7 +52,9 @@ const insertNewEvent = async (eventItem) => {
     end_time: eventItem.endTime,
   };
 
-  await database.collection(COLLECTION_NAME).add(newEvent);
+  try {
+    await database.collection(COLLECTION_NAME).add(newEvent);
+  } catch (err) {}
 };
 
 const updateEvent = async (eventItem) => {
@@ -60,24 +66,18 @@ const updateEvent = async (eventItem) => {
     end_time: eventItem.endTime,
   };
 
-  const eventRef = database.collection(COLLECTION_NAME).doc(eventId);
-  await eventRef.update(updatedEvent);
+  try {
+    const eventRef = database.collection(COLLECTION_NAME).doc(eventId);
+    await eventRef.update(updatedEvent);
+  } catch (err) {}
 };
 
-// Save event
+// Save event - create new event or update existing one
 const saveEvent = async (eventItem) => {
-  // TODO check and verify data
-  console.log("saving event:");
-  console.log(eventItem);
-
-  // create new or update existing
   if (eventItem.id === null) {
-    // create new
     await insertNewEvent(eventItem);
-    console.log("it should be inserted");
   } else {
     await updateEvent(eventItem);
-    console.log("it should be updated");
   }
 };
 

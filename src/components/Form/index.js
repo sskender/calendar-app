@@ -108,6 +108,22 @@ const Form = ({
   );
   const [endTime, setEndTime] = React.useState(eventItem?.endTime || "10:30");
 
+  // check startTime < endTime
+  const validateStartEndTime = (startTime, endTime) => {
+    const hourStartTime = parseInt(startTime.split(":")[0]);
+    const minStartTime = parseInt(startTime.split(":")[1]);
+    const hourEndTime = parseInt(endTime.split(":")[0]);
+    const minEndTime = parseInt(endTime.split(":")[1]);
+
+    if (hourStartTime > hourEndTime) {
+      return false;
+    } else if (hourStartTime === hourEndTime && minStartTime > minEndTime) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const handleChange = (event) => {
     const name = event.target.name;
     if (name === "title") {
@@ -118,10 +134,20 @@ const Form = ({
       setDate(date);
     } else if (name === "start-time") {
       const startTime = event.target.value;
-      setStartTime(startTime);
+      const validTimes = validateStartEndTime(startTime, endTime);
+      if (validTimes) {
+        setStartTime(startTime);
+      } else {
+        setStartTime(endTime);
+      }
     } else {
       const endTime = event.target.value;
-      setEndTime(endTime);
+      const validTimes = validateStartEndTime(startTime, endTime);
+      if (validTimes) {
+        setEndTime(endTime);
+      } else {
+        setEndTime(startTime);
+      }
     }
   };
 

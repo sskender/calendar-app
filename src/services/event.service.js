@@ -6,7 +6,8 @@ const COLLECTION_NAME = "events";
 const getEvents = async (dayItem) => {
   const dbQuery = database
     .collection(COLLECTION_NAME)
-    .where("date", "==", dayItem);
+    .where("date", "==", dayItem)
+    .orderBy("start_time");
 
   const querySnaphost = await dbQuery.get();
 

@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// TODO persistance
 const database = firebase.firestore();
+database.enablePersistence();
 
 export default database;

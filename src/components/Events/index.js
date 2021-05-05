@@ -22,12 +22,12 @@ const EventWrap = styled.div`
 `;
 
 const EventTitle = styled.div`
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   padding-left: 0.3rem;
 `;
 
 const EventTime = styled.div`
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   position: absolute;
   right: 0.2rem;
   top: 0.025rem;
@@ -35,6 +35,7 @@ const EventTime = styled.div`
 
 const Events = ({ dayItem, today, editEventHandler }) => {
   const [eventsList, setEventsList] = useState([]);
+  const maxTitleSize = 18;
 
   const isCurrDay = (day) => moment().isSame(day, "day");
   const isSelMonth = (day) => today.isSame(day, "month");
@@ -53,6 +54,11 @@ const Events = ({ dayItem, today, editEventHandler }) => {
   }, [dayItem]);
 
   return eventsList.map((eventItem) => {
+    const displayTitle =
+      eventItem.title.length <= maxTitleSize
+        ? eventItem.title
+        : eventItem.title.substring(0, maxTitleSize) + "...";
+
     return (
       <EventWrap
         onClick={() => {
@@ -61,7 +67,7 @@ const Events = ({ dayItem, today, editEventHandler }) => {
         thismonth={isSelMonth(dayItem) || ""}
         thisday={isCurrDay(dayItem) || ""}
       >
-        <EventTitle>{eventItem.title}</EventTitle>
+        <EventTitle title={eventItem.title}>{displayTitle}</EventTitle>
         <EventTime>{eventItem.startTime}</EventTime>
       </EventWrap>
     );

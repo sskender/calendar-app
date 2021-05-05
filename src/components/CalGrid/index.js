@@ -15,8 +15,10 @@ const GridWrap = styled.div`
 const CellWrap = styled.div`
     background-color: ${props => props.isWeekday ? "#272829" : "#1e1f21"};
     color: ${props => props.isSelMonth ? "#dddddd" : "#555759"};
-    min-height: ${props => props.isHeader ? 24 : 80}px;
-    min-width: 140px;
+    min-height: ${props => props.isHeader ? 24 : 100}px;
+    max-height: ${props => props.isHeader ? 24 : 100}px;
+    min-width: 175px;
+    max-width: 175px;
 `;
 
 const CellInRow = styled.div`

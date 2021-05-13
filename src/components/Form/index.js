@@ -110,18 +110,42 @@ const Form = ({
 
   // check startTime < endTime
   const validateStartEndTime = (startTime, endTime) => {
-    const hourStartTime = parseInt(startTime.split(":")[0]);
-    const minStartTime = parseInt(startTime.split(":")[1]);
-    const hourEndTime = parseInt(endTime.split(":")[0]);
-    const minEndTime = parseInt(endTime.split(":")[1]);
+    let hourStartTime = parseInt(startTime.split(":")[0]);
+    let minStartTime = parseInt(startTime.split(":")[1]);
+    let hourEndTime = parseInt(endTime.split(":")[0]);
+    let minEndTime = parseInt(endTime.split(":")[1]);
 
     if (hourStartTime > hourEndTime) {
-      return false;
-    } else if (hourStartTime === hourEndTime && minStartTime > minEndTime) {
-      return false;
-    } else {
-      return true;
+      hourEndTime = hourStartTime + 1;
+      minEndTime = minStartTime;
+      if (hourEndTime > 23) {
+        hourEndTime -= 24;
+      }
+    } else if (hourStartTime === hourEndTime && minStartTime >= minEndTime) {
+      hourEndTime = hourStartTime + 1;
+      minEndTime = minStartTime;
+      if (hourEndTime > 23) {
+        hourEndTime -= 24;
+      }
     }
+
+    // Add leading zeros
+    if (hourStartTime < 10) {
+      hourStartTime = `0${hourStartTime}`;
+    }
+    if (minStartTime < 10) {
+      minStartTime = `0${minStartTime}`;
+    }
+    if (hourEndTime < 10) {
+      hourEndTime = `0${hourEndTime}`;
+    }
+    if (minEndTime < 10) {
+      minEndTime = `0${minEndTime}`;
+    }
+
+    const newStartTime = `${hourStartTime}:${minStartTime}`;
+    const newEndTime = `${hourEndTime}:${minEndTime}`;
+    return { newStartTime, newEndTime };
   };
 
   const handleChange = (event) => {
@@ -134,20 +158,20 @@ const Form = ({
       setDate(date);
     } else if (name === "start-time") {
       const startTime = event.target.value;
-      const validTimes = validateStartEndTime(startTime, endTime);
-      if (validTimes) {
-        setStartTime(startTime);
-      } else {
-        setStartTime(endTime);
-      }
+      const { newStartTime, newEndTime } = validateStartEndTime(
+        startTime,
+        endTime
+      );
+      setStartTime(newStartTime);
+      setEndTime(newEndTime);
     } else {
       const endTime = event.target.value;
-      const validTimes = validateStartEndTime(startTime, endTime);
-      if (validTimes) {
-        setEndTime(endTime);
-      } else {
-        setEndTime(startTime);
-      }
+      const { newStartTime, newEndTime } = validateStartEndTime(
+        startTime,
+        endTime
+      );
+      setStartTime(newStartTime);
+      setEndTime(newEndTime);
     }
   };
 

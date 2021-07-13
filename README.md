@@ -1,5 +1,5 @@
 # Calendar in React.js
-Learning React.js by making a simple calendar app
+Simple calendar web app in React.js and Firebase
 
 <img src="docs/Screen1.png" alt="Screen1" style="width:720px;"/><br>
 <img src="docs/Screen2.png" alt="Screen2" style="width:720px;"/><br>
